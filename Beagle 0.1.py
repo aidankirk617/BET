@@ -1,0 +1,52 @@
+#Prompt
+########
+print("    ____                   __    ")
+print("   / __ )___  ____ _____ _/ /__      ")
+print("  / __  / _ \/ __ `/ __ `/ / _ \  ")
+print(" / /_/ /  __/ /_/ / /_/ / /  __/ ")
+print("/_____/\___/\__,_/\__, /_/\___/")
+print("                   /____/              ")
+
+
+
+user_input = input("Encrypt, or decrypt?: ")
+
+if user_input.lower() == "encrypt":
+
+  def encrypt(string, shift):
+
+      cipher = ''
+      for char in string:
+          if char == ' ':
+              cipher = cipher + char
+          elif  char.isupper():
+              cipher = cipher + chr((ord(char) + shift - 65) % 26 + 65)
+          else:
+              cipher = cipher + chr((ord(char) + shift - 97) % 26 + 97)
+
+      return cipher
+
+if user_input.lower() == "decrypt":
+
+  def decrypt(string, shift):
+
+      cipher = ''
+      for char in string:
+          if char == ' ':
+              cipher = cipher + char
+          elif  char.isupper():
+              cipher = cipher + chr((ord(char) - shift - 65) % 26 + 65)
+          else:
+              cipher = cipher + chr((ord(char) - shift - 97) % 26 + 97)
+
+      return cipher
+
+text = input("enter string: ")
+s = int(input("enter shift number: "))
+print("original string: ", text)
+print("after encryption: ", encrypt(text, s))
+
+text = input("enter code: ")
+s = int(input("enter shift number: "))
+print("original code: ", text)
+print("after decryption: ", decrypt(text, s))
