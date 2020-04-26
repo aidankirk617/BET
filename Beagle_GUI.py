@@ -1,62 +1,116 @@
-## Imports/Globals
+## Imports
+import tkinter as tk
+from tkinter import ttk
 from tkinter import *
 from tkinter import Menu
 import webbrowser
 
-## Menu Bar
-window = Tk()
-window.title("Beagle (Build 0.0.1)")
-menu = Menu(window)
-new_item = Menu(menu)
-new_item.add_command(label='New')
-new_item.add_command(label='Open')
-new_item.add_separator()
-new_item.add_command(label='Exit')
-menu.add_cascade(label='File', menu=new_item)
-menu.add_cascade(label='View', menu=new_item)
-menu.add_cascade(label='Window', menu=new_item)
-menu.add_cascade(label='Tools', menu=new_item)
-menu.add_cascade(label='Help', menu=new_item)
+## Functions
+def selected(event):
+     print("New Element Selected")
 
-## Window Size
-window.geometry('300x200')
+def encrypt(string, shift):
+
+    cipher = ''
+    for char in string:
+        if char == ' ':
+            cipher = cipher + char
+        elif  char.isupper():
+            cipher = cipher + chr((ord(char) + shift - 65) % 26 + 65)
+        else:
+            cipher = cipher + chr((ord(char) + shift - 97) % 26 + 97)
+
+    return cipher
+
+def decrypt(string, shift):
+
+    cipher = ''
+    for char in string:
+        if char == ' ':
+            cipher = cipher + char
+        elif  char.isupper():
+            cipher = cipher + chr((ord(char) - shift - 65) % 26 + 65)
+        else:
+            cipher = cipher + chr((ord(char) - shift - 97) % 26 + 97)
+
+    return cipher
+
+def Output():
+    print("String= ", (string.get()))
+
+    stringF = string.get()
+    shiftF = shift.get()
+    codeF = code.get()
+
+    if (codeF == 'e'):
+        cipher.set(encrypt(stringF, shiftF))
+    else:
+        cipher.set(decrypt(stringF, shiftF))
+
+def Reset():
+    rand.set("")
+    string.set("")
+    shift.set("")
+    code.set("")
+    cipher.set("")
+
+def Exit():
+    window.destroy()
+
+## Window
+window = tk.Tk()
+window.geometry('500x700')
+
+## Combo Box
+comboExample = ttk.Combobox(window,
+                            values=[
+                                    "Caeser",
+                                    "Reverse",
+                                    "Transposition",
+                                    "Viginere"])
+
+comboExample.current(1)
+
+comboExample.bind("<<ComboboxSelected>>", selected)
+
+
+## String Variables
+rand = StringVar()
+string = StringVar()
+shift = IntVar()
+code = StringVar()
+cipher = StringVar()
+
+## Labels
+strTxt = Label(window, text="String")
+shiTxt = Label(window, text="Shift")
+codTxt = Label(window, text="Code")
+cipTxt = Label(window, text="Cipher")
 
 ## Textbox
-lbl = Label(window, text="Caeser Encryption")
-bbl = Label(window, text="Caeser Decryption")
-lbl.grid(column=0, row=0)
-bbl.grid(column=0, row=1)
-txt = Entry(window,width=10)
-txt.grid(column=1, row=0)
-txt = Entry(window,width=10)
-txt.grid(column=1, row=1)
+e1 = tk.Entry(window)
+e2 = tk.Entry(window)
+e3 = tk.Entry(window)
+e4 = tk.Entry(window)
 
 ## Buttons
-def clicked():
-    res = "This shit don't work yet lol"
-    lbl.configure(text= res)
-    webbrowser.open('https://www.youtube.com/watch?v=mFzrq0jpnZw')  # Divine Punishment
-btn = Button(window, text="Encrypt", command=clicked)
-btn.grid(column=2, row=0)
-ctn = Button(window, text="Decrypt", command=clicked)
-ctn.grid(column=2, row=1)
+btnOutput = Button(window, text="Output", command=selected)
+btnReset = Button(window, text="Reset", command=selected)
+btnExit = Button(window, text="Exit", command=selected)
 
-## Caeser Cipher
+## Grid Position
+btnOutput.grid(column=0, row=12)
+btnReset.grid(column=1, row=12)
+btnExit.grid(column=2, row=12)
+comboExample.grid(column=3, row=0)
+strTxt.grid(column=0, row=6)
+shiTxt.grid(column=0, row=7)
+codTxt.grid(column=0, row=8)
+cipTxt.grid(column=0, row=9)
+e1.grid(row=6, column=1)
+e2.grid(row=7, column=1)
+e3.grid(row=8, column=1)
+e4.grid(row=9, column=1)
 
-## RSA
-
-## Reverse
-
-## Transposition
-
-## Affine
-
-## Multiplicative
-
-## Substitution
-
-## Exit Loop
-window.config(menu=menu)
+## Main
 window.mainloop()
-
-## Executable
