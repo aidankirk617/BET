@@ -1,9 +1,3 @@
-"""
-Todo: Fix decryption features
-Run other functions through
-Work on graphical overhaul
-"""
-
 ## Imports
 import tkinter as tk
 from tkinter import ttk
@@ -14,13 +8,16 @@ import webbrowser
 ## Window
 window = tk.Tk()
 window.geometry('500x700')
+window.title("Beagle Beta (Build 0.01)")
+
 
 ## String Variables
 rand = StringVar()
 string = StringVar()
 shift = IntVar()
-code = StringVar()
 cipher = StringVar()
+var1 = tk.IntVar()
+var2 = tk.IntVar()
 
 ## Combo Box
 cb = ttk.Combobox(window,
@@ -33,6 +30,11 @@ cb = ttk.Combobox(window,
 cb.current(1)
 
 ## Functions
+def donothing():
+   filewin = Toplevel(window)
+   button = Button(filewin, text="Do nothing button")
+   button.pack()
+
 def selected(event):
      print("New Element Selected")
 
@@ -109,71 +111,112 @@ def rDec(string, cipher):
 
     return cipher
 
-
+## Output
 def output():
     if cb.get() == "Caeser":
         print("String= ", (string.get()))
 
         stringF = string.get()
         shiftF = shift.get()
-        codeF = code.get()
 
-        if (codeF == 'e'):
+        if (var1.get() == 1) & (var2.get() == 0):
             cipher.set(cEnc(stringF, shiftF))
-        else:
+        elif (var1.get() == 0) & (var2.get() == 1):
             cipher.set(cDec(stringF, shiftF))
+        elif (var1.get() == 0) & (var2.get() == 0):
+            print("Please Select a Cipher")
+        else:
+            print("Please Select a Cipher")
+
 
     if cb.get() == "Reverse":
         print("String= ", (string.get()))
 
         stringF = string.get()
         cipherF = shift.get()
-        codeF = code.get()
 
-        if (codeF == 'e'):
+        if (var1.get() == 1) & (var2.get() == 0):
             cipher.set(rEnc(stringF, cipherF))
-        elif (codeF == 'd'):
+        elif (var1.get() == 0) & (var2.get() == 1):
             cipher.set(rDec(stringF, cipherF))
+        elif (var1.get() == 0) & (var2.get() == 0):
+            print("Please Select a Cipher")
+        else:
+            print("Please Select a Cipher")
 
     elif cb.get() == "Transposition":
         print("String= ", (string.get()))
 
         stringF = string.get()
         shiftF = shift.get()
-        codeF = code.get()
 
-        if (codeF == 'e'):
+        if (var1.get() == 1) & (var2.get() == 0):
             cipher.set(tEnc(shiftF, stringF))
-        else:
+        elif (var1.get() == 0) & (var2.get() == 1):
             print("Not yet a possibility")
+        elif (var1.get() == 0) & (var2.get() == 0):
+            print("Please Select a Cipher")
+        else:
+            print("Please Select a Cipher")
 
 
 def Reset():
     rand.set("")
     string.set("")
     shift.set("")
-    code.set("")
     cipher.set("")
 
 def Exit():
     window.destroy()
 
+## Menu Bar
+menubar = Menu(window)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=donothing)
+filemenu.add_command(label="Open", command=donothing)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_command(label="Save as...", command=donothing)
+filemenu.add_command(label="Close", command=donothing)
+filemenu.add_separator()
+
+filemenu.add_command(label="Exit", command=window.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_command(label="Undo", command=donothing)
+
+editmenu.add_separator()
+
+editmenu.add_command(label="Cut", command=donothing)
+editmenu.add_command(label="Copy", command=donothing)
+editmenu.add_command(label="Paste", command=donothing)
+editmenu.add_command(label="Delete", command=donothing)
+editmenu.add_command(label="Select All", command=donothing)
+
+menubar.add_cascade(label="Edit", menu=editmenu)
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="Help Index", command=donothing)
+helpmenu.add_command(label="About...", command=donothing)
+menubar.add_cascade(label="Help", menu=helpmenu)
+
 ## Labels
 lblStr = Label(window, text="String")
 lblShi = Label(window, text="Shift")
-lblCod = Label(window, text="Code")
 lblOut = Label(window, text="Cipher")
+
+#lblTitle = Label(window, text="Beagle", relief="solid",
+#width=20,font=("arial",19,"bold"))
 
 ## Textbox
 txtStr = tk.Entry(window, textvariable = string, justify = 'right')
 txtShi = tk.Entry(window, textvariable = shift, justify = 'right')
-txtCod = tk.Entry(window, textvariable = code, justify = 'right')
 txtOut = tk.Entry(window, textvariable = cipher, justify = 'right')
 
 ## Buttons
 btnOutput = Button(window, text="Output", command= output)
 btnReset = Button(window, text="Reset", command= Reset)
 btnExit = Button(window, text="Exit", command= Exit)
+eChk = tk.Checkbutton(window, text='Encrypt',variable=var1, onvalue=1, offvalue=0, command=output).grid(row=1)
+dChk = tk.Checkbutton(window, text='Decrypt',variable=var2, onvalue=1, offvalue=0, command=output).grid(row=2)
 
 ## Grid Position
 btnOutput.grid(column=0, row=12)
@@ -182,12 +225,11 @@ btnExit.grid(column=2, row=12)
 cb.grid(column=3, row=0)
 lblStr.grid(column=0, row=6)
 lblShi.grid(column=0, row=7)
-lblCod.grid(column=0, row=8)
 lblOut.grid(column=0, row=9)
 txtStr.grid(row=6, column=1)
 txtShi.grid(row=7, column=1)
-txtCod.grid(row=8, column=1)
 txtOut.grid(row=9, column=1)
 
 ## Main
+window.config(menu=menubar)
 window.mainloop()
