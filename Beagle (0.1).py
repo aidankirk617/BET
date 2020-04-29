@@ -227,5 +227,11 @@ txtShi.grid(row=2, column=1)
 txtOut.grid(row=3, column=1)
 
 ## Main
+print("    ____                   __    ")
+print("   / __ )___  ____ _____ _/ /__      ")
+print("  / __  / _ \/ __ `/ __ `/ / _ \  ")
+print(" / /_/ /  __/ /_/ / /_/ / /  __/ ")
+print("/_____/\___/\__,_/\__, /_/\___/")
+print("                   /____/              ")
 window.config(menu=menubar)
 window.mainloop()
